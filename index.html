@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compound Interest Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="number"], select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+
+        .result-section {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Compound Interest Calculator</h1>
+        <label for="principal">Principal (Rs.):</label>
+        <input type="number" id="principal" required><br><br>
+        <label for="rate">Annual Interest Rate (%):</label>
+        <input type="number" id="rate" required><br><br>
+        <label for="time">Time (years):</label>
+        <input type="number" id="time" required><br><br>
+        <label for="n">Compounded:</label>
+        <select id="n">
+            <option value="1">Annually</option>
+            <option value="2">Semi-Annually</option>
+            <option value="4">Quarterly</option>
+            <option value="12">Monthly</option>
+        </select><br><br>
+        <button onclick="calculateCompoundInterest()">Calculate</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateCompoundInterest() {
+            const principal = parseFloat(document.getElementById('principal').value);
+            const rate = parseFloat(document.getElementById('rate').value) / 100;
+            const time = parseFloat(document.getElementById('time').value);
+            const n = parseFloat(document.getElementById('n').value);
+
+            const amount = principal * Math.pow(1 + (rate / n), n * time);
+            const interest = amount - principal;
+
+            const resultHTML = `
+                <div class="result-section">
+                    <strong>Principal (Rs.):</strong> ${formatCurrency(principal)}
+                </div>
+                <div class="result-section">
+                    <strong>Rate:</strong> ${rate * 100}%
+                </div>
+                <div class="result-section">
+                    <strong>Time:</strong> ${time} years
+                </div>
+                <div class="result-section">
+                    <strong>Compounded:</strong> ${n} times per year
+                </div>
+                <div class="result-section">
+                    <strong>Amount (Rs.):</strong> ${formatCurrency(amount.toFixed(2))}
+                </div>
+                <div class="result-section">
+                    <strong>Interest (Rs.):</strong> ${formatCurrency(interest.toFixed(2))}
+                </div>
+            `;
+            document.getElementById('result').innerHTML = resultHTML;
+        }
+
+        function formatCurrency(amount) {
+            return 'Rs.' + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    </script>
+</body>
+</html>
